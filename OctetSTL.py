@@ -791,8 +791,8 @@ def main():
     x = 10
     y = 10
     z = 10
-    rd = 0.1
-    pitch = 6.04
+    rd = 0.1  # target relative density
+    pitch = 6.04 # only enter pitch if not generating from specified rd
     # test_cap = cap(strut_width, chamfer_factor, pitch)
     # test_corner = corner(strut_width, chamfer_factor, pitch)
     test_node = node(sw, cf)
@@ -800,7 +800,7 @@ def main():
     # test_corner_node = corner_node(strut_width, chamfer_factor)
 
 
-    generated_pitch = pitch_from_relden(rd, cf, sw)
+    generated_pitch = pitch_from_relden(rd, cf, sw) # calculate the pitch from a target relative density
     print ("For relative density %s, the calculated pitch is %s" %(str(rd), str(generated_pitch)))
 
     test_lattice = make_lattice(sw, cf, generated_pitch, x, y, z)
