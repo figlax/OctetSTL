@@ -757,15 +757,29 @@ def pitch_from_relden(relden, cf, sw):
     c3 = -8*node_volume + 24*sw*sw*np.sqrt(2)*(l_2 + l_3)
     return max(np.roots([c1, 0, c2, c3]))
 
+def generate_file_name(sw, cf, x, y, z, pitch, rd='none'):
+    sw_str = str(sw).replace(".", "-")
+    cf_str = str(cf).replace(".", "-")
+    x_str = str(x).replace(".", "-")
+    y_str = str(y).replace(".", "-")
+    z_str = str(z).replace(".", "-")
+    pitch_str = str(float("{0:.2f}".format(pitch))).replace(".", "-")
+    if rd is not 'none':
+        rd_str = str(rd).replace(".", "-")
+        return ("Octet_%sx%sy%sz_sw%s_cf%s_p%s_rd%s.stl" %(x_str, y_str, z_str, sw_str, cf_str, pitch_str, rd_str))
+    else:
+        return ("Octet_%sx%sy%sz_sw%s_cf%s_p%s.stl" %(x_str, y_str, z_str, sw_str, cf_str, pitch_str))
+
 
 def main():
-    pitch = 6.04
+
     sw = 0.6
     cf = 3.0
     x = 10
     y = 10
     z = 10
     rd = 0.1
+    pitch = 6.04
     # test_cap = cap(strut_width, chamfer_factor, pitch)
     # test_corner = corner(strut_width, chamfer_factor, pitch)
     test_node = node(sw, cf)
@@ -773,14 +787,16 @@ def main():
     # test_corner_node = corner_node(strut_width, chamfer_factor)
 
 
-    testpitch = pitch_from_relden(rd, cf, sw)
-    print testpitch
-    test_lattice = make_lattice(sw, cf, testpitch, x, y, z)
+    generated_pitch = pitch_from_relden(rd, cf, sw)
+    print ("For relative density %s, the calculated pitch is %s" %(str(rd), str(generated_pitch)))
 
+    test_lattice = make_lattice(sw, cf, generated_pitch, x, y, z)
 
-    test_lattice.save('Octet_10x10y10z_sw0-6_rd0-1_cf3-0.stl')
-    test_node.save('test_octet_closed_node.stl')
+    stl_file_name = generate_file_name(sw, cf, x, y, z, generated_pitch, rd)
 
+    test_lattice.save(stl_file_name)
+    # test_node.save('test_octet_closed_node.stl')
+    print ("File saved as %s" %stl_file_name)
 
     #preview_mesh(test_cap)
 
