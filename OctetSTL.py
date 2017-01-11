@@ -787,11 +787,11 @@ def generate_file_name(sw, cf, x, y, z, pitch, rd='none'):
 def main():
 
     sw = 0.6
-    cf = 3.0
+    cf = 5.0
     x = 10
     y = 10
     z = 10
-    rd = 0.1  # target relative density
+    rd = 0.05  # target relative density
     pitch = 6.04 # only enter pitch if not generating from specified rd
     # test_cap = cap(strut_width, chamfer_factor, pitch)
     # test_corner = corner(strut_width, chamfer_factor, pitch)
@@ -807,7 +807,7 @@ def main():
 
     stl_file_name = generate_file_name(sw, cf, x, y, z, generated_pitch, rd)
 
-    test_lattice.save(stl_file_name)
+    test_lattice.save('generated_stl_files/' + stl_file_name)
     # test_node.save('test_octet_closed_node.stl')
     print ("File saved as %s" %stl_file_name)
 

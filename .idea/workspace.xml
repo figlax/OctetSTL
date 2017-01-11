@@ -18,8 +18,8 @@
       <file leaf-file-name="OctetSTL.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/OctetSTL.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="321">
-              <caret line="796" column="51" lean-forward="false" selection-start-line="796" selection-start-column="51" selection-end-line="796" selection-end-column="51" />
+            <state relative-caret-position="81">
+              <caret line="793" column="13" lean-forward="false" selection-start-line="793" selection-start-column="13" selection-end-line="793" selection-end-column="13" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
@@ -62,7 +62,7 @@
     <panes />
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../CuboctSTL" />
   </component>
   <component name="RunManager" selected="Python.OctetSTL">
     <configuration default="false" name="OctetSTL" type="PythonConfigurationType" factoryName="Python" temporary="true">
@@ -307,8 +307,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/OctetSTL.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="321">
-          <caret line="796" column="51" lean-forward="false" selection-start-line="796" selection-start-column="51" selection-end-line="796" selection-end-column="51" />
+        <state relative-caret-position="81">
+          <caret line="793" column="13" lean-forward="false" selection-start-line="793" selection-start-column="13" selection-end-line="793" selection-end-column="13" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
           </folding>
