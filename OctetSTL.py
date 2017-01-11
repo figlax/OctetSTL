@@ -758,6 +758,19 @@ def pitch_from_relden(relden, cf, sw):
     return max(np.roots([c1, 0, c2, c3]))
 
 def generate_file_name(sw, cf, x, y, z, pitch, rd='none'):
+    """
+    This function returns a file name that describes the lattice. Periods in decimals ( "." are replaced by "-".
+    Only input rd if the pitch was generated from a relative density. If this is the case, put the input for pitch
+    should be the generated pitch.
+    :param sw: lattice strut width
+    :param cf: lattice chamfer factor
+    :param x: number of x voxels
+    :param y: number of y voxels
+    :param z: number of z voxels
+    :param pitch: lattice pitch
+    :param rd: lattice relative density. Only enter if specified relative density was used to generate the pitch
+    :return: string file name
+    """
     sw_str = str(sw).replace(".", "-")
     cf_str = str(cf).replace(".", "-")
     x_str = str(x).replace(".", "-")
