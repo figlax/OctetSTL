@@ -67,8 +67,8 @@ def box_cap(open_lattice, strutwidth, chamfactor, pitch, x, y, z):
     # rotate and translate cap geometry
     cap_geo_left = mesh.Mesh(cap_geo.data.copy())
     cap_geo_left.rotate([0, 1, 0], math.radians(270))
-    translate(cap_geo_left, np.array([-1, 0, 0]) * pitch / 2)
-    translate(cap_geo_left, np.array([0, 0, 1]) * pitch / 2)
+    translate(cap_geo_left, np.array([-1, 0, 0]) * pitch / 2.0)
+    translate(cap_geo_left, np.array([0, 0, 1]) * pitch / 2.0)
     left_side_caps = rec_array(cap_geo_left, y, z, [0, 1, 0], [0, 0, 1], pitch, pitch)
     closed_lattice += left_side_caps
 
@@ -76,16 +76,16 @@ def box_cap(open_lattice, strutwidth, chamfactor, pitch, x, y, z):
     cap_geo_right = mesh.Mesh(cap_geo.data.copy())
     cap_geo_right.rotate([0, 1, 0], math.radians(90))
     translate(cap_geo_right, np.array([1, 0, 0]) * pitch * x)
-    translate(cap_geo_right, np.array([0, 0, 1]) * pitch / 2)
-    translate(cap_geo_right, np.array([-1, 0, 0]) * pitch / 2)
+    translate(cap_geo_right, np.array([0, 0, 1]) * pitch / 2.0)
+    translate(cap_geo_right, np.array([-1, 0, 0]) * pitch / 2.0)
     right_side_caps = rec_array(cap_geo_right, y, z, [0, 1, 0], [0, 0, 1], pitch, pitch)
     closed_lattice += right_side_caps
 
     # --------cap front (negY) ------------
     cap_geo_front = mesh.Mesh(cap_geo.data.copy())
     cap_geo_front.rotate([1, 0, 0], math.radians(90))
-    translate(cap_geo_front, np.array([0, -1, 0]) * pitch / 2)
-    translate(cap_geo_front, np.array([0, 0, 1]) * pitch / 2)
+    translate(cap_geo_front, np.array([0, -1, 0]) * pitch / 2.0)
+    translate(cap_geo_front, np.array([0, 0, 1]) * pitch / 2.0)
     front_caps = rec_array(cap_geo_front, x, z, [1, 0, 0], [0, 0, 1], pitch, pitch)
     closed_lattice += front_caps
 
@@ -93,8 +93,8 @@ def box_cap(open_lattice, strutwidth, chamfactor, pitch, x, y, z):
     cap_geo_back = mesh.Mesh(cap_geo.data.copy())
     cap_geo_back.rotate([1, 0, 0], math.radians(270))
     translate(cap_geo_back, np.array([0, 1, 0]) * pitch * y)
-    translate(cap_geo_back, np.array([0, -1, 0]) * pitch / 2)
-    translate(cap_geo_back, np.array([0, 0, 1]) * pitch / 2)
+    translate(cap_geo_back, np.array([0, -1, 0]) * pitch / 2.0)
+    translate(cap_geo_back, np.array([0, 0, 1]) * pitch / 2.0)
     back_caps = rec_array(cap_geo_back, x, z, [1, 0, 0], [0, 0, 1], pitch, pitch)
     closed_lattice += back_caps
 
@@ -110,17 +110,16 @@ def node(strutwidth, chamfactor):
     """
 
     # Calculate commonly used values for geometry definition
-    chamheight = strutwidth/ chamfactor
-    halfw = strutwidth / 2
-
+    chamheight = float()/ chamfactor
+    halfw = strutwidth / 2.0
     # Define geometry of the top cap
     topcap = np.zeros(6, dtype=mesh.Mesh.dtype)
     # topcap['vectors'][0] = np.array([[halfw, l_2, h],
                                        #  [l_2, halfw, h],
                                         #[0, 0, h]])
     # Calculate the height and halflength of top octogonal cap
-    h = chamheight + (strutwidth * np.sin(np.pi / 4) + strutwidth / 2)
-    l_2 = strutwidth / 2 + chamheight
+    h = chamheight + (strutwidth * np.sin(np.pi / 4.0) + halfw)
+    l_2 = halfw + chamheight
     point1 = [halfw, l_2, h]
     point2 = [l_2, halfw, h]
     point3 = [l_2, -halfw, h]
@@ -140,7 +139,7 @@ def node(strutwidth, chamfactor):
 
     # Define Geometry of the chamfered sides
     hs = l_2 # height of side points of node
-    l_3 = l_2 + strutwidth*np.cos(np.pi/4) # horizontal position of points
+    l_3 = l_2 + strutwidth*np.cos(np.pi/4.0) # horizontal position of points
     point1s = [halfw, l_3, hs]
     point2s = [l_3, halfw, hs]
     point3s = [l_3, -halfw, hs]
@@ -172,12 +171,12 @@ def node(strutwidth, chamfactor):
 
     # Define second chamfer to bottom octet struts
     l_4 = np.sqrt(2)*(l_3 - halfw)  # Is this square root going to be a problem for error prop?
-    point_A_prime = [l_3 - np.sqrt(2)*strutwidth/2, l_3, halfw]
-    point_B_prime = [l_3,  l_3 - np.sqrt(2)*strutwidth/2, halfw]
-    point_H_prime = [-(l_3 - np.sqrt(2)*strutwidth/2), l_3, halfw]
-    point_A_prime_bottom = [l_3 - np.sqrt(2)*strutwidth/2, l_3, 0]
-    point_B_prime_bottom = [l_3, l_3 - np.sqrt(2)*strutwidth/2, 0]
-    point_H_prime_bottom = [-(l_3 - np.sqrt(2)*strutwidth/2), l_3, 0]
+    point_A_prime = [l_3 - np.sqrt(2)*halfw, l_3, halfw]
+    point_B_prime = [l_3,  l_3 - np.sqrt(2)*halfw, halfw]
+    point_H_prime = [-(l_3 - np.sqrt(2)*halfw), l_3, halfw]
+    point_A_prime_bottom = [l_3 - np.sqrt(2)*halfw, l_3, 0]
+    point_B_prime_bottom = [l_3, l_3 - np.sqrt(2)*halfw, 0]
+    point_H_prime_bottom = [-(l_3 - np.sqrt(2)*halfw), l_3, 0]
 
     sides = np.zeros(6, dtype=mesh.Mesh.dtype)
     sides['vectors'][0] = np.array([point1s, point2s, point_A_prime])
@@ -204,14 +203,14 @@ def corner_node(strutwidth, chamfactor):
     """
 
     # Calculate commonly used values for geometry definition
-    chamheight = strutwidth / chamfactor
-    halfw = strutwidth / 2
+    chamheight = float(strutwidth) / chamfactor
+    halfw = strutwidth / 2.0
 
     # Define geometry of the top cap
     topcap = np.zeros(3, dtype=mesh.Mesh.dtype)
     # Calculate the height and half-length of top octogonal cap
-    h = chamheight + (strutwidth * np.sin(np.pi / 4) + strutwidth / 2)
-    l_2 = strutwidth / 2 + chamheight
+    h = chamheight + (strutwidth * np.sin(np.pi / 4.0) + strutwidth / 2.0)
+    l_2 = strutwidth / 2.0 + chamheight
     point1 = [halfw, l_2, h]
     point2 = [l_2, halfw, h]
     point3 = [l_2, 0, h]
@@ -227,7 +226,7 @@ def corner_node(strutwidth, chamfactor):
 
     # Define Geometry of the chamfered sides
     hs = l_2 # height of side points of node
-    l_3 = l_2 + strutwidth*np.cos(np.pi/4) # horizontal position of points
+    l_3 = l_2 + strutwidth*np.cos(np.pi/4.0) # horizontal position of points
     point1s = [halfw, l_3, hs]
     point2s = [l_3, halfw, hs]
     point3s = [l_3, -halfw, hs]
@@ -253,12 +252,12 @@ def corner_node(strutwidth, chamfactor):
 
     # Define second chamfer to bottom octet struts
     l_4 = np.sqrt(2)*(l_3 - halfw)  # Is this square root going to be a problem for error prop?
-    point_A_prime = [l_3 - np.sqrt(2)*strutwidth/2, l_3, halfw]
-    point_B_prime = [l_3,  l_3 - np.sqrt(2)*strutwidth/2, halfw]
+    point_A_prime = [l_3 - np.sqrt(2)*strutwidth/2.0, l_3, halfw]
+    point_B_prime = [l_3,  l_3 - np.sqrt(2)*strutwidth/2.0, halfw]
     point_H_prime_quarter = [0, l_3, halfw]
     point_c_prime_quarter = [l_3, 0, halfw]
-    point_A_prime_bottom = [l_3 - np.sqrt(2)*strutwidth/2, l_3, 0]
-    point_B_prime_bottom = [l_3, l_3 - np.sqrt(2)*strutwidth/2, 0]
+    point_A_prime_bottom = [l_3 - np.sqrt(2)*strutwidth/2.0, l_3, 0]
+    point_B_prime_bottom = [l_3, l_3 - np.sqrt(2)*strutwidth/2.0, 0]
     point_H_prime_quarter_bottom = [0, l_3, 0]
     point_c_prime_quarter_bottom = [l_3, 0, 0]
 
@@ -296,13 +295,13 @@ def strut(strutwidth, chamfactor,  pitch):
     # Define connection points on bottom node
     # Geometry Parameters
     # Calculate commonly used values for geometry definition
-    chamheight = strutwidth / chamfactor
-    halfw = strutwidth / 2
-    halfp = pitch / 2
-    h = chamheight + (strutwidth * np.sin(np.pi / 4) + strutwidth / 2) # height of top cap
-    l_2 = strutwidth / 2 + chamheight # horizontal position of points on topcap
+    chamheight = float(strutwidth) / chamfactor
+    halfw = strutwidth / 2.0
+    halfp = pitch / 2.0
+    h = chamheight + (strutwidth * np.sin(np.pi / 4.0) + strutwidth / 2.0) # height of top cap
+    l_2 = strutwidth / 2.0 + chamheight # horizontal position of points on topcap
     hs = l_2  # height of side points of node
-    l_3 = l_2 + strutwidth * np.cos(np.pi / 4)  # horizontal position of points
+    l_3 = l_2 + strutwidth * np.cos(np.pi / 4.0)  # horizontal position of points
 
     point2_copy = [l_2, halfw, h]
     point3_copy = [l_2, -halfw, h]
@@ -344,24 +343,24 @@ def side_strut(strutwidth, chamfactor,  pitch):
     # Define connection points on bottom node
     # Geometry Parameters
     # Calculate commonly used values for geometry definition
-    chamheight = strutwidth / chamfactor
-    halfw = strutwidth / 2
-    halfp = pitch / 2
-    h = chamheight + (strutwidth * np.sin(np.pi / 4) + strutwidth / 2) # height of top cap
-    l_2 = strutwidth / 2 + chamheight # horizontal position of points on topcap
+    chamheight = float(strutwidth) / chamfactor
+    halfw = strutwidth / 2.0
+    halfp = pitch / 2.0
+    h = chamheight + (strutwidth * np.sin(np.pi / 4.0) + strutwidth / 2.0) # height of top cap
+    l_2 = strutwidth / 2.0 + chamheight # horizontal position of points on topcap
     hs = l_2  # height of side points of node
-    l_3 = l_2 + strutwidth * np.cos(np.pi / 4)  # horizontal position of points
+    l_3 = l_2 + strutwidth * np.cos(np.pi / 4.0)  # horizontal position of points
 
     # translate the points we need down half a pitch
-    point2_copy = [l_2, halfw, h - pitch/2]
-    point3_copy = [l_2, -halfw, h - pitch/2]
-    point2s_copy = [l_3, halfw, hs - pitch/2]
-    point3s_copy = [l_3, -halfw, hs - pitch/2]
+    point2_copy = [l_2, halfw, h - halfp]
+    point3_copy = [l_2, -halfw, h - halfp]
+    point2s_copy = [l_3, halfw, hs - halfp]
+    point3s_copy = [l_3, -halfw, hs - halfp]
     # new points to attach to on side node
-    point2n = [halfp-h, halfw, halfp - l_2 - pitch/2]
-    point3n = [halfp-h, -halfw, halfp - l_2 - pitch/2]
-    point2sn = [halfp-hs, halfw, halfp - l_3 - pitch/2]
-    point3sn = [halfp-hs, -halfw, halfp - l_3 - pitch/2]
+    point2n = [halfp-h, halfw, halfp - l_2 - halfp]
+    point3n = [halfp-h, -halfw, halfp - l_2 - halfp]
+    point2sn = [halfp-hs, halfw, halfp - l_3 - halfp]
+    point3sn = [halfp-hs, -halfw, halfp - l_3 - halfp]
 
     # rotate all those points 90 degrees about the x axis. [ x, y, z] --> [ x, -z, y]
 
@@ -387,7 +386,7 @@ def side_strut(strutwidth, chamfactor,  pitch):
     singlestrut_geo['vectors'][7] = np.array([point2s_rotated, point3sn_rotated, point3s_rotated])
 
     # Move the strut back to side height
-    singlestrut_geo['vectors'] += [0, 0, pitch/2]
+    singlestrut_geo['vectors'] += [0, 0, halfp]
 
     finalsinglestrut = mesh.Mesh(singlestrut_geo)
 
@@ -407,13 +406,13 @@ def corner(strut_width, chamfer_factor, pitch):
 
     # Geometry Parameters
     # Calculate commonly used values for geometry definition
-    chamheight = strut_width / chamfer_factor
-    halfw = strut_width / 2
-    halfp = pitch / 2
-    h = chamheight + (strut_width * np.sin(np.pi / 4) + strut_width / 2)  # height of top cap
-    l_2 = strut_width / 2 + chamheight  # horizontal position of points on topcap
+    chamheight = float(strut_width) / chamfer_factor
+    halfw = strut_width / 2.0
+    halfp = pitch / 2.0
+    h = chamheight + (strut_width * np.sin(np.pi / 4.0) + halfw)  # height of top cap
+    l_2 = halfw + chamheight  # horizontal position of points on topcap
     hs = l_2  # height of side points of node
-    l_3 = l_2 + strut_width * np.cos(np.pi / 4)  # horizontal position of points
+    l_3 = l_2 + strut_width * np.cos(np.pi / 4.0)  # horizontal position of points
 
     # re-use points from strut code, with alteration to create half-struts
     point2 = [l_2, halfw, h]
@@ -458,14 +457,14 @@ def cap(strut_width, chamfer_factor, pitch):
     :return: numpy stl mesh object of cap geometry
     """
     # Calculate commonly used values for geometry definition
-    chamheight = strut_width / chamfer_factor
-    halfw = strut_width / 2
-    l_2 = strut_width / 2 + chamheight
-    l_3 = l_2 + strut_width * np.cos(np.pi / 4)  # horizontal position of points
+    chamheight = float(strut_width) / chamfer_factor
+    halfw = strut_width / 2.0
+    l_2 = strut_width / 2.0 + chamheight
+    l_3 = l_2 + strut_width * np.cos(np.pi / 4.0)  # horizontal position of points
     l_4 = np.sqrt(2) * (l_3 - halfw)  # Is this square root going to be a problem for error prop?
 
     # Define points for node cap
-    face_strut_pos = l_3 - np.sqrt(2) * strut_width / 2
+    face_strut_pos = l_3 - np.sqrt(2) * strut_width / 2.0
     point_A_prime_bottom = [face_strut_pos, l_3, 0]
     point_B_prime_bottom = [l_3, face_strut_pos, 0]
     point_C_prime_bottom = [l_3, -face_strut_pos, 0]
@@ -492,14 +491,14 @@ def cap(strut_width, chamfer_factor, pitch):
     corner_cap = mesh.Mesh(corner_cap_geo)
 
     # Define strut cap
-    point_corner_A_prime_bottom = [-pitch/2 + point_A_prime_bottom[0], -pitch/2 + point_A_prime_bottom[1], 0]
-    point_corner_B_prime_bottom = [-pitch/2 + point_B_prime_bottom[0], -pitch/2 + point_B_prime_bottom[1], 0]
+    point_corner_A_prime_bottom = [-pitch/2.0 + point_A_prime_bottom[0], -pitch/2.0 + point_A_prime_bottom[1], 0]
+    point_corner_B_prime_bottom = [-pitch/2.0 + point_B_prime_bottom[0], -pitch/2.0 + point_B_prime_bottom[1], 0]
     strut_cap_geo = np.zeros(2, dtype=mesh.Mesh.dtype)
     strut_cap_geo['vectors'][0] = np.array([point_corner_A_prime_bottom, point_F_prime_bottom, point_E_prime_bottom])
     strut_cap_geo['vectors'][1] = np.array([point_corner_A_prime_bottom, point_E_prime_bottom, point_corner_B_prime_bottom])
     strut_cap = mesh.Mesh(strut_cap_geo)
 
-    translate(corner_cap, np.array([-1, -1, 0])* pitch/2)
+    translate(corner_cap, np.array([-1, -1, 0])* pitch/2.0)
     corners = arraypolar(corner_cap, [0, 0, 1], 4)
     struts = arraypolar(strut_cap, [0, 0, 1], 4)
 
@@ -539,13 +538,13 @@ def voxel(strut_width, chamfer_factor, pitch):
 
     # Define voxel corner nodes
     v_corner = corner(strut_width, chamfer_factor, pitch)
-    translate(v_corner, np.array([-1, 0, 0]) * pitch / 2)
-    translate(v_corner, np.array([0, -1, 0]) * pitch / 2)
+    translate(v_corner, np.array([-1, 0, 0]) * pitch / 2.0)
+    translate(v_corner, np.array([0, -1, 0]) * pitch / 2.0)
     bottom_corners = arraypolar(v_corner, [0, 0, 1], 4)
     v_corner_top = corner(strut_width, chamfer_factor, pitch)
     v_corner_top.rotate([0, 1, 0], math.radians(180))
-    translate(v_corner_top, np.array([1, 0, 0]) * pitch / 2)
-    translate(v_corner_top, np.array([0, -1, 0]) * pitch / 2)
+    translate(v_corner_top, np.array([1, 0, 0]) * pitch / 2.0)
+    translate(v_corner_top, np.array([0, -1, 0]) * pitch / 2.0)
     translate(v_corner_top, np.array([0, 0, 1])* pitch)
     top_corners = arraypolar(v_corner_top, [0, 0, 1], 4)
 
@@ -576,7 +575,7 @@ def arraypolar(m_obj, r_axis, num, rotation_point=None, angle=360):
     array_objects = list()
     for i in range(num):
         obj = mesh.Mesh(m_obj.data.copy())
-        obj.rotate(r_axis, math.radians((angle / num) * i), rotation_point)
+        obj.rotate(r_axis, math.radians((angle / float(num)) * i), rotation_point)
         array_objects.append(obj)
     return array_objects
 
@@ -735,19 +734,19 @@ def pitch_from_relden(relden, cf, sw):
     :param sw: float. strut width of voxel
     :return: lattice pitch
     """
-    chamheight = sw / cf
-    l_2 = sw / 2 + chamheight
-    l_3 = l_2 + sw * np.cos(math.radians(45))  # horizontal position of points
-    l_4 = np.sqrt(2) * (l_3 - sw / 2)
-    tan_theta = ((l_3 - l_2) / ((l_4 / 2) - (np.sqrt(2) * chamheight / 2)))
+    chamheight = float(sw) / cf
+    l_2 = sw / 2.0 + chamheight
+    l_3 = l_2 + sw * np.cos(math.radians(45.0))  # horizontal position of points
+    l_4 = np.sqrt(2) * (l_3 - sw / 2.0)
+    tan_theta = ((l_3 - l_2) / ((l_4 / 2.0) - (np.sqrt(2.0) * chamheight / 2.0)))
     # v1 = 2 * sw * l_3 * l_3 * l_3 - sw * sw * sw / 2
     v1 = ((4 * l_3 * l_3) - (sw * sw)) * 0.5 * sw
-    h = (l_4 / 2) * tan_theta
-    hs = chamheight * tan_theta * np.sqrt(2) / 2
-    v2 = np.sqrt(2) * chamheight * chamheight * sw
+    h = (l_4 / 2.0) * tan_theta
+    hs = chamheight * tan_theta * np.sqrt(2.0) / 2.0
+    v2 = np.sqrt(2.0) * chamheight * chamheight * sw
     v3 = 4.0 * chamheight * chamheight * chamheight / 3.0
-    v4 = chamheight * (sw * sw + 4 * sw * (l_3 - sw / 2.0) + 2 * (l_3 - sw / 2) * (l_3 - sw / 2.0))
-    v5 = ((l_4 * l_4 * h) - (2 * (chamheight * chamheight * hs))) / 3  # v2 from cuboct code
+    v4 = chamheight * (sw * sw + 4 * sw * (l_3 - sw / 2.0) + 2 * (l_3 - sw / 2.0) * (l_3 - sw / 2.0))
+    v5 = ((l_4 * l_4 * h) - (2 * (chamheight * chamheight * hs))) / 3.0  # v2 from cuboct code
     v6 = 4 * sw * (0.5 * (l_3 - l_2) * (l_3 - l_2) + (l_3 - l_2) * chamheight)  # v3 from cuboct code
     v7 = sw * sw * (l_3 - l_2)  # v4 from cuboct code
     node_volume = v1 + (v2 + v3 + v4) + v5 + v6 + v7
